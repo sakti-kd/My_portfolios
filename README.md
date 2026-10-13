@@ -1,22 +1,19 @@
-# Saktikanta Dhal — QA Automation Portfolio
+# Saktikanta Dhal — Multi-page Portfolio
 
-Static GitHub Pages portfolio. Keep all files in the repository root so relative assets resolve correctly.
+This version separates the portfolio into independent pages while retaining the dark neon visual theme.
 
-## Files
-- `index.html` — portfolio website
-- `profile-photo.jpg` — profile image used in the hero
-- `Sakti_Dhal_Resume.pdf` — downloadable resume
-- `favicon.svg` — browser tab icon
-- `404.html` — themed not-found page
+## Pages
+- `index.html` — Home / animated hero
+- `about.html` — About
+- `skills.html` — Interactive skills explorer
+- `projects.html` — Projects
+- `experience.html` — Experience
+- `contact.html` — Contact
 
-## Publish
-Upload these files to the root of the `main` branch of `sakti-kd/My_portfolios`. Commit the changes and wait for GitHub Pages to deploy.
+## Deploy to GitHub Pages
+1. Extract this ZIP.
+2. Upload all files and assets to the root of your existing `sakti-kd/My_portfolios` repository, replacing the existing files when prompted.
+3. Commit the changes to the branch used by GitHub Pages.
+4. Wait for the Pages workflow to complete, then test all six menu links on desktop and mobile.
 
-The portfolio is built with HTML, CSS, and vanilla JavaScript; no build step or additional dependency is required.
-
-
-## Responsive motion update
-- Removed duplicate floating hero cards that overlapped the profile on mobile.
-- Reworked the skills constellation into a responsive two-column card grid on phones.
-- Added distinct entrance animations for About, Skills, Projects, Experience, and Contact navigation views.
-- Added staggered card entrances and skill-detail transitions, while respecting reduced-motion preferences.
+The site uses static HTML, CSS and JavaScript; no build step is required.
