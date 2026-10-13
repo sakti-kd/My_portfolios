@@ -52,3 +52,8 @@ The About, Skills, Projects, Experience, and Contact pages now include lightweig
 - Native cross-document View Transitions are enabled where the browser supports them; unsupported browsers navigate immediately.
 - Three.js loads from cdnjs, so the 3D scenes require an internet connection. If WebGL/CDN loading fails, the existing lightweight CSS scene remains as a fallback.
 - The Home page and its current hero animation are preserved.
+
+
+## Dedicated 3D scenes update
+
+Each inner page now has a full-width, dedicated Three.js scene area: About uses a holographic human figure and orbital rings; Skills uses a connected icosahedral constellation; Projects uses a 3D automation pipeline with moving signals; Experience uses rising career bars and a moving timeline signal; Contact uses a 3D envelope and a connected communication network. These are distinct scenes, not a repeated globe. The page content is available immediately; there is no timed intro gate. Scene dimensions respond to mobile widths, device pixel ratio is capped, rendering pauses while the tab is hidden, and reduced-motion preferences are respected. Three.js is loaded from a CDN, so an internet connection is required for the WebGL scenes.
