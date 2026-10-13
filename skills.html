@@ -645,15 +645,46 @@ document.querySelectorAll('[data-skill]').forEach(btn=>btn.addEventListener('cli
       for(let i=0;i<7;i++){const bead=new T.Mesh(new T.SphereGeometry(.075,12,10),new T.MeshBasicMaterial({color:i%2?0x7eefff:0x428cff,emissive:i%2?0x2bcfff:0x174cff}));root.add(bead);moving.push({type:'bead',obj:bead,phase:i/7});}
       const ring=new T.Mesh(new T.TorusGeometry(2.05,.012,6,100),wire(0x1d8eff,.6));ring.rotation.x=Math.PI/2.5;ring.position.y=-.5;root.add(ring);moving.push({type:'spin',obj:ring,rate:.16});
     } else if (page === 'experience') {
-      // Career progression represented by a rising set of 3D pillars and a glowing path.
-      const base=new T.Mesh(new T.BoxGeometry(4.7,.13,1.2),solid(0x071a32,0x06417a));base.position.y=-1.13;root.add(base);
-      const heights=[.48,.72,.58,.94,.82,1.3,1.08,1.55];
-      const bars=[];
-      heights.forEach((h,i)=>{const x=-1.8+i*.52;const b=new T.Mesh(new T.BoxGeometry(.28,h,.3),solid(i%2?0x267bff:0x25dfff,i%2?0x164aff:0x0784b8));b.position.set(x,-1.05+h/2,0);root.add(b);bars.push(b);moving.push({type:'bar',obj:b,phase:i*.6,base:h});const cap=new T.Mesh(new T.SphereGeometry(.055,8,8),new T.MeshBasicMaterial({color:0xa4f3ff}));cap.position.set(x,-1.05+h,0);root.add(cap);moving.push({type:'cap',obj:cap,phase:i*.6,baseY:-1.05+h});});
-      const pathPoints=[];for(let i=0;i<70;i++){const x=-2.05+i*(4.1/69);const y=-.58+Math.sin(i/69*Math.PI*2)*.43+i/69*.68;pathPoints.push(new T.Vector3(x,y,.24));}
-      const curve=new T.CatmullRomCurve3(pathPoints);root.add(new T.Mesh(new T.TubeGeometry(curve,90,.018,6,false),new T.MeshBasicMaterial({color:0x4be8ff,transparent:true,opacity:.75})));
-      const runner=new T.Mesh(new T.SphereGeometry(.095,12,10),new T.MeshBasicMaterial({color:0xffffff,emissive:0x25cfff,emissiveIntensity:1}));root.add(runner);moving.push({type:'runner',obj:runner,curve});
-      const halo=new T.Mesh(new T.TorusGeometry(2.15,.012,6,96),wire(0x1e7eff,.55));halo.rotation.x=1.15;root.add(halo);moving.push({type:'spin',obj:halo,rate:-.1});
+      // A luminous digital globe wrapped in animated career/data streams, matching the reference direction.
+      const globe = new T.Group(); root.add(globe);
+      const globeMat = new T.MeshBasicMaterial({color:0x16b9e8, wireframe:true, transparent:true, opacity:.68});
+      const globeMesh = new T.Mesh(new T.SphereGeometry(1.18,28,20),globeMat); globe.add(globeMesh);
+      const inner = new T.Mesh(new T.SphereGeometry(1.13,22,16),new T.MeshBasicMaterial({color:0x0759a5,transparent:true,opacity:.12,side:T.DoubleSide})); globe.add(inner);
+      // Latitude/longitude-like luminous rings give the sphere depth without a heavy texture.
+      for(let i=0;i<5;i++){
+        const lat=(i-2)*.43, radius=Math.sqrt(Math.max(.08,1-lat*lat/1.45));
+        const ring=new T.Mesh(new T.TorusGeometry(radius,.009,5,80),new T.MeshBasicMaterial({color:i%2?0x2e8bff:0x53efff,transparent:true,opacity:.62}));
+        ring.position.y=lat*.78; ring.rotation.x=Math.PI/2; globe.add(ring);
+      }
+      for(let i=0;i<4;i++){
+        const meridian=new T.Mesh(new T.TorusGeometry(1.17,.008,5,80),new T.MeshBasicMaterial({color:i%2?0x236dff:0x35dfff,transparent:true,opacity:.62}));
+        meridian.rotation.y=i*Math.PI/4; globe.add(meridian); moving.push({type:'meridian',obj:meridian,rate:(i%2?-.12:.1)});
+      }
+      // Network nodes connected by short arcs across the globe.
+      const nodePoints=[]; const nodeCount=24;
+      for(let i=0;i<nodeCount;i++){
+        const y=1-2*(i+.5)/nodeCount, r=Math.sqrt(1-y*y), a=i*2.399963;
+        const v=new T.Vector3(Math.cos(a)*r,y,Math.sin(a)*r).multiplyScalar(1.205); nodePoints.push(v);
+        const n=new T.Mesh(new T.SphereGeometry(i%5===0?.045:.025,8,7),new T.MeshBasicMaterial({color:i%4===0?0x7efcff:0x1c91ff}));
+        n.position.copy(v); globe.add(n); moving.push({type:'globeNode',obj:n,phase:i*.43,base:v.clone()});
+      }
+      const linkPositions=[];
+      nodePoints.forEach((v,i)=>{for(let j=i+1;j<nodePoints.length;j++){if(v.distanceTo(nodePoints[j])<.64 && (i+j)%3===0)linkPositions.push(v.x,v.y,v.z,nodePoints[j].x,nodePoints[j].y,nodePoints[j].z);}});
+      const linkGeo=new T.BufferGeometry(); linkGeo.setAttribute('position',new T.Float32BufferAttribute(linkPositions,3));
+      globe.add(new T.LineSegments(linkGeo,new T.LineBasicMaterial({color:0x1d8fff,transparent:true,opacity:.48})));
+      // Three orbital data paths surrounding the globe.
+      const streams=[];
+      for(let k=0;k<3;k++){
+        const points=[];
+        for(let i=0;i<=90;i++){const a=i/90*Math.PI*2;const x=Math.cos(a)* (1.5+k*.15);const z=Math.sin(a)*(0.48+k*.12);const y=Math.sin(a*1.35+k*1.8)*(.28+k*.08);points.push(new T.Vector3(x,y,z));}
+        const curve=new T.CatmullRomCurve3(points);
+        const tube=new T.Mesh(new T.TubeGeometry(curve,100,.012,5,false),new T.MeshBasicMaterial({color:k===1?0x347bff:0x38e8ff,transparent:true,opacity:.88}));
+        tube.rotation.set(.35+k*.43,.18+k*.65,.2-k*.26); root.add(tube);
+        const runner=new T.Mesh(new T.SphereGeometry(.055,10,8),new T.MeshBasicMaterial({color:0xffffff,emissive:0x26cfff,emissiveIntensity:1})); root.add(runner);
+        streams.push({curve,runner,phase:k/3,tilt:tube.rotation.clone()});
+      }
+      moving.push({type:'globe',obj:globe},{type:'streams',items:streams});
+      const halo=new T.Mesh(new T.TorusGeometry(1.92,.012,5,100),wire(0x1e7eff,.6)); halo.rotation.set(1.08,.3,.15); root.add(halo); moving.push({type:'spin',obj:halo,rate:-.075});
     } else if (page === 'contact') {
       // A volumetric envelope and connected communication nodes, not another globe.
       const env=new T.Group();root.add(env);
@@ -685,7 +716,7 @@ document.querySelectorAll('[data-skill]').forEach(btn=>btn.addEventListener('cli
         if(page==='about'){root.rotation.y=Math.sin(t*.22)*.08;root.rotation.x=Math.sin(t*.31)*.04;moving.forEach(m=>{if(m.type==='figure')m.obj.rotation.y=Math.sin(t*.45)*.12;if(m.type==='pulse')m.obj.scale.setScalar(.82+.22*(.5+.5*Math.sin(t*2+m.phase)));if(m.type==='rings')m.userData.forEach((r,i)=>r.rotation.z+=.0015*(i%2?-1:1));});}
         if(page==='skills'){moving.forEach(m=>{if(m.type==='core'){m.obj.rotation.y=t*.22;m.obj.rotation.x=t*.13;}if(m.type==='inner'){m.obj.rotation.y=-t*.32;m.obj.rotation.x=t*.2;}if(m.type==='ring')m.obj.rotation.z+=m.rate;if(m.type==='node'){m.obj.position.copy(m.base);m.obj.position.multiplyScalar(1+.035*Math.sin(t*1.5+m.phase));m.obj.scale.setScalar(.85+.25*(.5+.5*Math.sin(t*2+m.phase)));}});root.rotation.y=Math.sin(t*.25)*.12;}
         if(page==='projects'){moving.forEach(m=>{if(m.type==='module'){m.obj.position.y=m.baseY+.045*Math.sin(t*1.6+m.phase);m.obj.rotation.y=.12*Math.sin(t*.55+m.phase);}if(m.type==='bead'){const u=(t*.19+m.phase)%1;m.obj.position.set(-2.1+u*4.2,-.36+.08*Math.sin(u*Math.PI*6),.28*Math.sin(u*Math.PI*2));}if(m.type==='spin')m.obj.rotation.z+=m.rate;});root.rotation.y=Math.sin(t*.3)*.06;}
-        if(page==='experience'){moving.forEach(m=>{if(m.type==='bar'){const h=m.base*(.88+.12*(.5+.5*Math.sin(t*1.4+m.phase)));m.obj.scale.y=h/m.base;m.obj.position.y=-1.05+h/2;}if(m.type==='cap'){const h=m.baseY+(.12*m.base)*(.5+.5*Math.sin(t*1.4+m.phase));m.obj.position.y=h;}if(m.type==='runner')m.obj.position.copy(m.curve.getPoint((t*.11)%1));if(m.type==='spin')m.obj.rotation.z+=m.rate;});}
+        if(page==='experience'){moving.forEach(m=>{if(m.type==='globe'){m.obj.rotation.y=t*.16;m.obj.rotation.x=Math.sin(t*.23)*.06;}if(m.type==='globeNode'){m.obj.position.copy(m.base);m.obj.scale.setScalar(.8+.3*(.5+.5*Math.sin(t*2+m.phase)));}if(m.type==='meridian')m.obj.rotation.y+=m.rate*.012;if(m.type==='streams'){m.items.forEach((stream,i)=>{const u=(t*.075+stream.phase)%1;stream.runner.position.copy(stream.curve.getPoint(u));stream.runner.position.applyEuler(stream.tilt);});}if(m.type==='spin')m.obj.rotation.z+=m.rate;});}
         if(page==='contact'){moving.forEach(m=>{if(m.type==='envelope'){m.obj.rotation.y=.12*Math.sin(t*.7);m.obj.position.y=.04*Math.sin(t*1.1);}if(m.type==='contactNode'){m.obj.position.copy(m.base);m.obj.position.y+=.08*Math.sin(t*1.5+m.phase);}if(m.type==='signal'){const u=(t*.22)%1;const path=[[-2.15,.8,.1],[0,1.45,-.1],[1.9,.85,.1],[2.1,-.65,.2],[0,-1.35,.1],[-1.85,-.85,.2],[-2.15,.8,.1]];const q=u*(path.length-1),i=Math.floor(q),f=q-i,a=path[i],b=path[Math.min(i+1,path.length-1)];m.obj.position.set(a[0]+(b[0]-a[0])*f,a[1]+(b[1]-a[1])*f,a[2]+(b[2]-a[2])*f);}if(m.type==='spin')m.obj.rotation.z+=m.rate;});}
         dust.rotation.y=t*.012; dust.rotation.x=Math.sin(t*.12)*.04;
       }
