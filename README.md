@@ -27,3 +27,7 @@ A static, responsive portfolio with separate pages and distinct motion styles fo
 5. Wait for the Pages workflow to complete, then test each menu, the bottom Home cards, and all eight specialty cards on desktop and mobile.
 
 The site uses static HTML, CSS, and JavaScript. No build step or external JavaScript library is required.
+
+
+## Animation fix
+The latest build includes a page-entry animation replay patch. Each page re-triggers its page-specific heading and content animations on load and browser back/forward restoration. The `prefers-reduced-motion` accessibility setting is still respected.

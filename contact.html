@@ -125,4 +125,115 @@ body[data-page="contact"] .contact-panel .actions a:nth-child(5) { animation-del
   body[data-page] .skill-orb, body[data-page] .quick-card { animation:none!important; transition:none!important; filter:none!important; }
 }
 
-</style></head><body data-page="contact"><a class="skip-link" href="#main-content">Skip to content</a><header class="topbar"><div class="shell nav"><a href="index.html" class="brand" aria-label="Saktikanta Dhal home"><span class="logo">SD</span><span><strong>SAKTIKANTA DHAL</strong><small>QA AUTOMATION ENGINEER</small></span></a><button class="menu" id="menuBtn" aria-expanded="false" aria-controls="tabs">☰ Menu</button><nav class="tabs" id="tabs" aria-label="Main navigation"><a class="tab" href="index.html">⌂ &nbsp;Home</a><a class="tab" href="about.html">♙ &nbsp;About</a><a class="tab" href="skills.html">◇ &nbsp;Skills</a><a class="tab" href="projects.html">▱ &nbsp;Projects</a><a class="tab" href="experience.html">▣ &nbsp;Experience</a><a class="tab active" href="contact.html" aria-current="page">➤ &nbsp;Contact</a></nav><a class="download" href="Sakti_Dhal_Resume.pdf" download>↓ &nbsp;Download CV</a></div></header><main class="shell" id="main-content"><section class="section page-section"><div class="page-heading"><div class="kicker">SAKTIKANTA DHAL / CONTACT</div><h1 class="view-title">Contact</h1></div><div class="content-view active" data-panel="contact"><div class="kicker">05 / LET'S CONNECT</div><h2 class="view-title">Have a testing challenge or an opportunity?</h2><p class="view-lead">I'm interested in QA automation, Playwright, API testing, and AI-driven test engineering. Reach out to discuss opportunities and ideas.</p><div class="contact-panel"><div><h3>Let's build quality into the process.</h3><p>Email is the best way to get in touch.</p><p aria-label="Current location" class="contact-location">⌖  Bengaluru, Karnataka, India</p></div><div class="actions" style="margin:0"><a class="primary" href="mailto:sd.saktikd@gmail.com">✉  Email me</a><a class="secondary" href="tel:+918984549492">☎  Call: 8984544992</a><a aria-label="Chat on WhatsApp" class="secondary" href="https://wa.me/918984549492" rel="noopener noreferrer" target="_blank">◉  WhatsApp</a><a class="secondary" download="" href="Sakti_Dhal_Resume.pdf">↓  Resume PDF</a><a class="secondary" href="https://github.com/sakti-kd" rel="noopener noreferrer" target="_blank">⌘  GitHub</a></div></div></div></section></main><footer class="footer"><div class="shell footer-inner"><span>© <span id="year"></span> Saktikanta Dhal · QA Automation Engineer</span><span>Built for reliability, curiosity, and continuous improvement. <a href="index.html">Back to Home ↑</a></span></div></footer><div class="toast" id="toast" role="status" aria-live="polite"></div><script>(()=>{const menu=document.getElementById('menuBtn'),nav=document.getElementById('tabs');if(menu&&nav){menu.addEventListener('click',()=>{const open=nav.classList.toggle('open');menu.setAttribute('aria-expanded',String(open));});}const year=document.getElementById('year');if(year)year.textContent=new Date().getFullYear();})();</script></body></html>
+
+/* Reliable page-entry animation replay patch */
+body.page-motion-replay .page-heading {
+  animation-duration: .9s !important;
+  animation-fill-mode: both !important;
+}
+body.page-motion-replay[data-page="home"] .page-heading {
+  animation: homeHeadingIn .9s cubic-bezier(.16,1,.3,1) both !important;
+}
+body.page-motion-replay[data-page="about"] .page-heading {
+  animation: aboutHeadingIn .85s cubic-bezier(.16,1,.3,1) both !important;
+}
+body.page-motion-replay[data-page="skills"] .page-heading {
+  animation: skillsHeadingIn .85s cubic-bezier(.16,1,.3,1) both !important;
+}
+body.page-motion-replay[data-page="projects"] .page-heading {
+  animation: projectsHeadingIn .85s cubic-bezier(.16,1,.3,1) both !important;
+}
+body.page-motion-replay[data-page="experience"] .page-heading {
+  animation: experienceHeadingIn .9s cubic-bezier(.16,1,.3,1) both !important;
+}
+body.page-motion-replay[data-page="contact"] .page-heading {
+  animation: contactHeadingIn .85s cubic-bezier(.16,1,.3,1) both !important;
+}
+body.page-motion-replay[data-page="home"] .hero-copy {
+  animation: homeCopyIn .95s cubic-bezier(.16,1,.3,1) both !important;
+}
+body.page-motion-replay[data-page="home"] .skill-orb {
+  animation: orbReveal .9s cubic-bezier(.16,1,.3,1) both, cardFloat 5.5s ease-in-out 1s infinite !important;
+}
+body.page-motion-replay[data-page="home"] .quick-card {
+  animation: homeCardIn .8s cubic-bezier(.16,1,.3,1) both !important;
+}
+body.page-motion-replay[data-page="about"] .info-card {
+  animation: aboutCardIn .75s cubic-bezier(.16,1,.3,1) both !important;
+}
+body.page-motion-replay[data-page="about"] .info-card:nth-child(2) { animation-delay: .12s !important; }
+body.page-motion-replay[data-page="about"] .info-card:nth-child(3) { animation-delay: .24s !important; }
+body.page-motion-replay[data-page="skills"] .skill-choice {
+  animation: skillChoiceIn .7s cubic-bezier(.16,1,.3,1) both !important;
+}
+body.page-motion-replay[data-page="skills"] .skill-choice:nth-child(2) { animation-delay: .08s !important; }
+body.page-motion-replay[data-page="skills"] .skill-choice:nth-child(3) { animation-delay: .16s !important; }
+body.page-motion-replay[data-page="skills"] .skill-choice:nth-child(4) { animation-delay: .24s !important; }
+body.page-motion-replay[data-page="projects"] .project-card {
+  animation: projectCardIn .8s cubic-bezier(.16,1,.3,1) both !important;
+}
+body.page-motion-replay[data-page="projects"] .project-card:nth-child(2) { animation-delay: .1s !important; }
+body.page-motion-replay[data-page="projects"] .project-card:nth-child(3) { animation-delay: .2s !important; }
+body.page-motion-replay[data-page="projects"] .project-card:nth-child(4) { animation-delay: .3s !important; }
+body.page-motion-replay[data-page="experience"] .timeline {
+  animation: timelineGrow .9s cubic-bezier(.16,1,.3,1) both !important;
+  transform-origin: top;
+}
+body.page-motion-replay[data-page="experience"] .timeline-item {
+  animation: experienceCardIn .75s cubic-bezier(.16,1,.3,1) both !important;
+}
+body.page-motion-replay[data-page="experience"] .timeline-item:nth-child(2) { animation-delay: .12s !important; }
+body.page-motion-replay[data-page="experience"] .timeline-item:nth-child(3) { animation-delay: .24s !important; }
+body.page-motion-replay[data-page="contact"] .contact-panel {
+  animation: contactPanelIn .9s cubic-bezier(.16,1,.3,1) both !important;
+}
+body.page-motion-replay[data-page="contact"] .contact-panel .actions a {
+  animation: contactActionIn .6s ease both !important;
+}
+body.page-motion-replay[data-page="contact"] .contact-panel .actions a:nth-child(2) { animation-delay: .12s !important; }
+body.page-motion-replay[data-page="contact"] .contact-panel .actions a:nth-child(3) { animation-delay: .24s !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  body.page-motion-replay .page-heading,
+  body.page-motion-replay .hero-copy,
+  body.page-motion-replay .skill-orb,
+  body.page-motion-replay .quick-card,
+  body.page-motion-replay .info-card,
+  body.page-motion-replay .skill-choice,
+  body.page-motion-replay .project-card,
+  body.page-motion-replay .timeline,
+  body.page-motion-replay .timeline-item,
+  body.page-motion-replay .contact-panel,
+  body.page-motion-replay .contact-panel .actions a {
+    animation: none !important;
+  }
+}
+
+</style></head><body data-page="contact"><a class="skip-link" href="#main-content">Skip to content</a><header class="topbar"><div class="shell nav"><a href="index.html" class="brand" aria-label="Saktikanta Dhal home"><span class="logo">SD</span><span><strong>SAKTIKANTA DHAL</strong><small>QA AUTOMATION ENGINEER</small></span></a><button class="menu" id="menuBtn" aria-expanded="false" aria-controls="tabs">☰ Menu</button><nav class="tabs" id="tabs" aria-label="Main navigation"><a class="tab" href="index.html">⌂ &nbsp;Home</a><a class="tab" href="about.html">♙ &nbsp;About</a><a class="tab" href="skills.html">◇ &nbsp;Skills</a><a class="tab" href="projects.html">▱ &nbsp;Projects</a><a class="tab" href="experience.html">▣ &nbsp;Experience</a><a class="tab active" href="contact.html" aria-current="page">➤ &nbsp;Contact</a></nav><a class="download" href="Sakti_Dhal_Resume.pdf" download>↓ &nbsp;Download CV</a></div></header><main class="shell" id="main-content"><section class="section page-section"><div class="page-heading"><div class="kicker">SAKTIKANTA DHAL / CONTACT</div><h1 class="view-title">Contact</h1></div><div class="content-view active" data-panel="contact"><div class="kicker">05 / LET'S CONNECT</div><h2 class="view-title">Have a testing challenge or an opportunity?</h2><p class="view-lead">I'm interested in QA automation, Playwright, API testing, and AI-driven test engineering. Reach out to discuss opportunities and ideas.</p><div class="contact-panel"><div><h3>Let's build quality into the process.</h3><p>Email is the best way to get in touch.</p><p aria-label="Current location" class="contact-location">⌖  Bengaluru, Karnataka, India</p></div><div class="actions" style="margin:0"><a class="primary" href="mailto:sd.saktikd@gmail.com">✉  Email me</a><a class="secondary" href="tel:+918984549492">☎  Call: 8984544992</a><a aria-label="Chat on WhatsApp" class="secondary" href="https://wa.me/918984549492" rel="noopener noreferrer" target="_blank">◉  WhatsApp</a><a class="secondary" download="" href="Sakti_Dhal_Resume.pdf">↓  Resume PDF</a><a class="secondary" href="https://github.com/sakti-kd" rel="noopener noreferrer" target="_blank">⌘  GitHub</a></div></div></div></section></main><footer class="footer"><div class="shell footer-inner"><span>© <span id="year"></span> Saktikanta Dhal · QA Automation Engineer</span><span>Built for reliability, curiosity, and continuous improvement. <a href="index.html">Back to Home ↑</a></span></div></footer><div class="toast" id="toast" role="status" aria-live="polite"></div><script>(()=>{const menu=document.getElementById('menuBtn'),nav=document.getElementById('tabs');if(menu&&nav){menu.addEventListener('click',()=>{const open=nav.classList.toggle('open');menu.setAttribute('aria-expanded',String(open));});}const year=document.getElementById('year');if(year)year.textContent=new Date().getFullYear();})();</script>
+<script>
+/* Re-trigger the page-specific entrance animations after every full page load,
+   including browser back/forward cache restores. */
+(() => {
+  const body = document.body;
+  const replay = () => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      body.classList.remove('page-motion-replay');
+      return;
+    }
+    body.classList.remove('page-motion-replay');
+    // Force a style/layout boundary so re-adding the class restarts animations.
+    void body.offsetWidth;
+    requestAnimationFrame(() => body.classList.add('page-motion-replay'));
+  };
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', replay, { once: true });
+  } else {
+    replay();
+  }
+  window.addEventListener('pageshow', (event) => {
+    if (event.persisted) replay();
+  });
+})();
+</script>
+
+</body></html>
