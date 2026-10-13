@@ -862,4 +862,37 @@ renderer.render(scene,camera); if(!reduced&&!document.hidden&&sceneVisible)raf=r
  section.insertBefore(hero,content);
 })();
 </script>
+
+<style id="distinct-scene-overhaul">
+/* Distinct illustrated scenes: intentionally replace the prior generic WebGL look. */
+.page-3d-scene canvas.scene-webgl{display:none!important}
+.page-3d-scene .distinct-scene-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;display:block;filter:drop-shadow(0 8px 24px rgba(0,120,255,.12))}
+.page-3d-scene:has(.distinct-scene-svg){isolation:isolate;overflow:hidden}
+.page-3d-scene:has(.distinct-scene-svg)::before{content:"";position:absolute;inset:8%;border-radius:50%;background:radial-gradient(ellipse,rgba(0,100,255,.12),transparent 68%);pointer-events:none}
+.distinct-scene-svg .orbit-a{transform-origin:300px 218px;animation:orbitA 17s linear infinite}
+.distinct-scene-svg .skill-rot{transform-origin:300px 218px;animation:skillRot 24s linear infinite}
+.distinct-scene-svg .skill-orbit{transform-origin:300px 218px;animation:orbitA 12s linear infinite reverse}
+.distinct-scene-svg .pipe-block{animation:pipeLift 4s ease-in-out infinite alternate;transform-origin:300px 230px}
+.distinct-scene-svg .data-runner{animation:dataRun 4.8s linear infinite}
+.distinct-scene-svg .runner-two{animation-delay:-2.4s}
+.distinct-scene-svg .earth-spin{transform-origin:300px 215px;animation:earthTurn 22s linear infinite}
+.distinct-scene-svg .career-pulse{animation:careerFlow 5.5s linear infinite}
+.distinct-scene-svg .envelope-float{transform-origin:300px 220px;animation:envelopeFloat 4.5s ease-in-out infinite}
+.distinct-scene-svg .envelope-flap{transform-origin:300px 183px;animation:flapMove 5s ease-in-out infinite}
+.distinct-scene-svg .signal-rings{transform-origin:300px 211px;animation:signalExpand 3.4s ease-out infinite}
+@keyframes orbitA{to{transform:rotate(360deg)}}
+@keyframes skillRot{to{transform:rotate(360deg)}}
+@keyframes pipeLift{from{transform:translateY(3px)}to{transform:translateY(-7px)}}
+@keyframes dataRun{0%{transform:translate(0,0);opacity:0}8%{opacity:1}45%{transform:translate(205px,61px);opacity:1}90%{transform:translate(405px,-13px);opacity:1}100%{transform:translate(405px,-13px);opacity:0}}
+@keyframes earthTurn{to{transform:rotateY(360deg) rotateZ(4deg)}}
+@keyframes careerFlow{0%{transform:translate(0,0);opacity:.15}15%{opacity:1}50%{transform:translate(210px,-102px)}100%{transform:translate(460px,-58px);opacity:.1}}
+@keyframes envelopeFloat{0%,100%{transform:translateY(0) rotate(-.5deg)}50%{transform:translateY(-8px) rotate(.5deg)}}
+@keyframes flapMove{0%,62%,100%{transform:rotateX(0deg)}72%,88%{transform:rotateX(24deg)}}
+@keyframes signalExpand{0%{opacity:.75;transform:scale(.84)}75%,100%{opacity:0;transform:scale(1.14)}}
+@media(max-width:680px){.page-3d-scene .distinct-scene-svg{inset:0;width:100%;height:100%}}
+@media(prefers-reduced-motion:reduce){.distinct-scene-svg *{animation:none!important}}
+</style>
+<script id="distinct-scene-replacement">
+(()=>{const host=document.querySelector('.page-3d-scene');if(!host)return;host.querySelectorAll('canvas.scene-webgl').forEach(el=>el.remove());host.querySelectorAll('.distinct-scene-svg').forEach(el=>el.remove());host.insertAdjacentHTML('beforeend', '<svg class="distinct-scene-svg scene-experience" viewBox="0 0 600 440" role="img" aria-label="Digital globe with animated career route streams and milestones">\n<defs><radialGradient id="earthE"><stop stop-color="#0f8fca" stop-opacity=".35"/><stop offset="1" stop-color="#04142b" stop-opacity=".95"/></radialGradient><filter id="glowE"><feGaussianBlur stdDeviation="3.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>\n<circle cx="300" cy="215" r="126" fill="url(#earthE)" stroke="#32dfff" stroke-opacity=".65" stroke-width="2"/>\n<g class="earth-spin" fill="none" stroke-linecap="round"><ellipse cx="300" cy="215" rx="126" ry="44" stroke="#3beaff" stroke-opacity=".72" stroke-width="1.7"/><ellipse cx="300" cy="215" rx="126" ry="84" stroke="#218bff" stroke-opacity=".62"/><ellipse cx="300" cy="215" rx="54" ry="126" stroke="#36dfff" stroke-opacity=".7"/><ellipse cx="300" cy="215" rx="96" ry="126" stroke="#247dff" stroke-opacity=".6"/><path d="M190 175 Q228 142 262 164 T335 164 T409 177 M180 240 Q225 214 264 237 T337 240 T417 229 M220 291 Q264 268 303 289 T382 285" stroke="#54eaff" stroke-opacity=".7"/></g>\n<g fill="#7ffaff" filter="url(#glowE)"><circle cx="222" cy="169" r="5"/><circle cx="364" cy="165" r="6"/><circle cx="331" cy="249" r="5"/><circle cx="255" cy="279" r="4"/></g>\n<g fill="none" stroke-linecap="round"><path d="M35 299 C115 205 170 351 256 277 S414 142 565 214" stroke="#2b7bff" stroke-width="3"/><path d="M38 326 C129 238 179 369 271 293 S423 167 564 244" stroke="#43eaff" stroke-width="2.5"/><path d="M53 263 C136 178 183 320 268 248 S419 118 548 190" stroke="#6aaeff" stroke-width="1.5" stroke-opacity=".8"/></g>\n<g class="career-pulse" filter="url(#glowE)"><circle cx="95" cy="269" r="7" fill="#d3ffff"/><circle cx="95" cy="269" r="17" fill="none" stroke="#3cecff" stroke-width="2"/></g>\n<g fill="#061c39" stroke="#4be9ff" stroke-width="1.5"><rect x="47" y="83" width="118" height="37" rx="9"/><rect x="421" y="83" width="124" height="37" rx="9"/><rect x="236" y="356" width="128" height="36" rx="9"/></g><g fill="#a6f8ff" font-family="monospace" font-size="12" letter-spacing="1"><text x="63" y="106">FOUNDATIONS</text><text x="439" y="106">AUTOMATION</text><text x="255" y="379">AI-ASSISTED QA</text></g>\n</svg>');host.classList.add('distinct-scene-active');})();
+</script>
 </body></html>

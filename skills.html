@@ -895,4 +895,37 @@ renderer.render(scene,camera); if(!reduced&&!document.hidden&&sceneVisible)raf=r
  section.insertBefore(hero,content);
 })();
 </script>
+
+<style id="distinct-scene-overhaul">
+/* Distinct illustrated scenes: intentionally replace the prior generic WebGL look. */
+.page-3d-scene canvas.scene-webgl{display:none!important}
+.page-3d-scene .distinct-scene-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;display:block;filter:drop-shadow(0 8px 24px rgba(0,120,255,.12))}
+.page-3d-scene:has(.distinct-scene-svg){isolation:isolate;overflow:hidden}
+.page-3d-scene:has(.distinct-scene-svg)::before{content:"";position:absolute;inset:8%;border-radius:50%;background:radial-gradient(ellipse,rgba(0,100,255,.12),transparent 68%);pointer-events:none}
+.distinct-scene-svg .orbit-a{transform-origin:300px 218px;animation:orbitA 17s linear infinite}
+.distinct-scene-svg .skill-rot{transform-origin:300px 218px;animation:skillRot 24s linear infinite}
+.distinct-scene-svg .skill-orbit{transform-origin:300px 218px;animation:orbitA 12s linear infinite reverse}
+.distinct-scene-svg .pipe-block{animation:pipeLift 4s ease-in-out infinite alternate;transform-origin:300px 230px}
+.distinct-scene-svg .data-runner{animation:dataRun 4.8s linear infinite}
+.distinct-scene-svg .runner-two{animation-delay:-2.4s}
+.distinct-scene-svg .earth-spin{transform-origin:300px 215px;animation:earthTurn 22s linear infinite}
+.distinct-scene-svg .career-pulse{animation:careerFlow 5.5s linear infinite}
+.distinct-scene-svg .envelope-float{transform-origin:300px 220px;animation:envelopeFloat 4.5s ease-in-out infinite}
+.distinct-scene-svg .envelope-flap{transform-origin:300px 183px;animation:flapMove 5s ease-in-out infinite}
+.distinct-scene-svg .signal-rings{transform-origin:300px 211px;animation:signalExpand 3.4s ease-out infinite}
+@keyframes orbitA{to{transform:rotate(360deg)}}
+@keyframes skillRot{to{transform:rotate(360deg)}}
+@keyframes pipeLift{from{transform:translateY(3px)}to{transform:translateY(-7px)}}
+@keyframes dataRun{0%{transform:translate(0,0);opacity:0}8%{opacity:1}45%{transform:translate(205px,61px);opacity:1}90%{transform:translate(405px,-13px);opacity:1}100%{transform:translate(405px,-13px);opacity:0}}
+@keyframes earthTurn{to{transform:rotateY(360deg) rotateZ(4deg)}}
+@keyframes careerFlow{0%{transform:translate(0,0);opacity:.15}15%{opacity:1}50%{transform:translate(210px,-102px)}100%{transform:translate(460px,-58px);opacity:.1}}
+@keyframes envelopeFloat{0%,100%{transform:translateY(0) rotate(-.5deg)}50%{transform:translateY(-8px) rotate(.5deg)}}
+@keyframes flapMove{0%,62%,100%{transform:rotateX(0deg)}72%,88%{transform:rotateX(24deg)}}
+@keyframes signalExpand{0%{opacity:.75;transform:scale(.84)}75%,100%{opacity:0;transform:scale(1.14)}}
+@media(max-width:680px){.page-3d-scene .distinct-scene-svg{inset:0;width:100%;height:100%}}
+@media(prefers-reduced-motion:reduce){.distinct-scene-svg *{animation:none!important}}
+</style>
+<script id="distinct-scene-replacement">
+(()=>{const host=document.querySelector('.page-3d-scene');if(!host)return;host.querySelectorAll('canvas.scene-webgl').forEach(el=>el.remove());host.querySelectorAll('.distinct-scene-svg').forEach(el=>el.remove());host.insertAdjacentHTML('beforeend', '<svg class="distinct-scene-svg scene-skills" viewBox="0 0 600 440" role="img" aria-label="Rotating connected technology sphere with skill nodes">\n<defs><radialGradient id="coreS"><stop stop-color="#3cecff" stop-opacity=".24"/><stop offset="1" stop-color="#06162d" stop-opacity="0"/></radialGradient><filter id="glowS"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>\n<circle cx="300" cy="218" r="180" fill="url(#coreS)"/>\n<g class="skill-rot"><circle cx="300" cy="218" r="118" fill="#0a2d53" fill-opacity=".26" stroke="#45eaff" stroke-opacity=".8" stroke-width="2"/><ellipse cx="300" cy="218" rx="118" ry="46" fill="none" stroke="#36cfff" stroke-opacity=".8"/><ellipse cx="300" cy="218" rx="118" ry="46" fill="none" stroke="#2183ff" stroke-width="2" transform="rotate(60 300 218)"/><ellipse cx="300" cy="218" rx="118" ry="46" fill="none" stroke="#85f8ff" stroke-opacity=".7" transform="rotate(-60 300 218)"/>\n<g stroke="#27cfff" stroke-opacity=".52" stroke-width="1.3" fill="none"><path d="M300 100 L365 124 L409 178 L396 249 L342 318 L270 332 L204 291 L181 222 L211 153Z"/><path d="M300 100 L342 318 M365 124 L204 291 M409 178 L181 222 M396 249 L211 153 M300 100 L396 249 L204 291 L300 100 M211 153 L342 318 L409 178"/></g>\n<g fill="#a4fbff" filter="url(#glowS)"><circle cx="300" cy="100" r="7"/><circle cx="365" cy="124" r="5"/><circle cx="409" cy="178" r="7"/><circle cx="396" cy="249" r="5"/><circle cx="342" cy="318" r="8"/><circle cx="270" cy="332" r="5"/><circle cx="204" cy="291" r="7"/><circle cx="181" cy="222" r="5"/><circle cx="211" cy="153" r="7"/></g></g>\n<g class="skill-orbit"><ellipse cx="300" cy="218" rx="176" ry="65" fill="none" stroke="#277aff" stroke-width="3" transform="rotate(-28 300 218)"/><circle cx="459" cy="151" r="9" fill="#4ef4ff"/><circle cx="141" cy="275" r="6" fill="#4ef4ff"/></g>\n<g fill="#061c38" stroke="#56eaff" stroke-width="1.5"><rect x="57" y="122" width="90" height="36" rx="9"/><rect x="437" y="285" width="100" height="36" rx="9"/><rect x="237" y="36" width="126" height="34" rx="9"/></g><g fill="#a8f7ff" font-size="13" font-family="monospace" letter-spacing="2"><text x="72" y="145">UI / API</text><text x="453" y="308">AGENTS</text><text x="255" y="58">AUTOMATION</text></g>\n</svg>');host.classList.add('distinct-scene-active');})();
+</script>
 </body></html>

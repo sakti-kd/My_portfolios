@@ -862,4 +862,37 @@ renderer.render(scene,camera); if(!reduced&&!document.hidden&&sceneVisible)raf=r
  section.insertBefore(hero,content);
 })();
 </script>
+
+<style id="distinct-scene-overhaul">
+/* Distinct illustrated scenes: intentionally replace the prior generic WebGL look. */
+.page-3d-scene canvas.scene-webgl{display:none!important}
+.page-3d-scene .distinct-scene-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;display:block;filter:drop-shadow(0 8px 24px rgba(0,120,255,.12))}
+.page-3d-scene:has(.distinct-scene-svg){isolation:isolate;overflow:hidden}
+.page-3d-scene:has(.distinct-scene-svg)::before{content:"";position:absolute;inset:8%;border-radius:50%;background:radial-gradient(ellipse,rgba(0,100,255,.12),transparent 68%);pointer-events:none}
+.distinct-scene-svg .orbit-a{transform-origin:300px 218px;animation:orbitA 17s linear infinite}
+.distinct-scene-svg .skill-rot{transform-origin:300px 218px;animation:skillRot 24s linear infinite}
+.distinct-scene-svg .skill-orbit{transform-origin:300px 218px;animation:orbitA 12s linear infinite reverse}
+.distinct-scene-svg .pipe-block{animation:pipeLift 4s ease-in-out infinite alternate;transform-origin:300px 230px}
+.distinct-scene-svg .data-runner{animation:dataRun 4.8s linear infinite}
+.distinct-scene-svg .runner-two{animation-delay:-2.4s}
+.distinct-scene-svg .earth-spin{transform-origin:300px 215px;animation:earthTurn 22s linear infinite}
+.distinct-scene-svg .career-pulse{animation:careerFlow 5.5s linear infinite}
+.distinct-scene-svg .envelope-float{transform-origin:300px 220px;animation:envelopeFloat 4.5s ease-in-out infinite}
+.distinct-scene-svg .envelope-flap{transform-origin:300px 183px;animation:flapMove 5s ease-in-out infinite}
+.distinct-scene-svg .signal-rings{transform-origin:300px 211px;animation:signalExpand 3.4s ease-out infinite}
+@keyframes orbitA{to{transform:rotate(360deg)}}
+@keyframes skillRot{to{transform:rotate(360deg)}}
+@keyframes pipeLift{from{transform:translateY(3px)}to{transform:translateY(-7px)}}
+@keyframes dataRun{0%{transform:translate(0,0);opacity:0}8%{opacity:1}45%{transform:translate(205px,61px);opacity:1}90%{transform:translate(405px,-13px);opacity:1}100%{transform:translate(405px,-13px);opacity:0}}
+@keyframes earthTurn{to{transform:rotateY(360deg) rotateZ(4deg)}}
+@keyframes careerFlow{0%{transform:translate(0,0);opacity:.15}15%{opacity:1}50%{transform:translate(210px,-102px)}100%{transform:translate(460px,-58px);opacity:.1}}
+@keyframes envelopeFloat{0%,100%{transform:translateY(0) rotate(-.5deg)}50%{transform:translateY(-8px) rotate(.5deg)}}
+@keyframes flapMove{0%,62%,100%{transform:rotateX(0deg)}72%,88%{transform:rotateX(24deg)}}
+@keyframes signalExpand{0%{opacity:.75;transform:scale(.84)}75%,100%{opacity:0;transform:scale(1.14)}}
+@media(max-width:680px){.page-3d-scene .distinct-scene-svg{inset:0;width:100%;height:100%}}
+@media(prefers-reduced-motion:reduce){.distinct-scene-svg *{animation:none!important}}
+</style>
+<script id="distinct-scene-replacement">
+(()=>{const host=document.querySelector('.page-3d-scene');if(!host)return;host.querySelectorAll('canvas.scene-webgl').forEach(el=>el.remove());host.querySelectorAll('.distinct-scene-svg').forEach(el=>el.remove());host.insertAdjacentHTML('beforeend', '<svg class="distinct-scene-svg scene-about" viewBox="0 0 600 440" role="img" aria-label="Animated holographic human identity inside a glass sphere">\n<defs>\n <radialGradient id="auraA"><stop stop-color="#1fe6ff" stop-opacity=".22"/><stop offset="1" stop-color="#06254d" stop-opacity="0"/></radialGradient>\n <linearGradient id="glassA" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#4ef2ff" stop-opacity=".23"/><stop offset=".48" stop-color="#0b67d8" stop-opacity=".04"/><stop offset="1" stop-color="#63cfff" stop-opacity=".18"/></linearGradient>\n <linearGradient id="bodyA" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#9affff"/><stop offset=".45" stop-color="#16bfff"/><stop offset="1" stop-color="#1761ff"/></linearGradient>\n <filter id="glowA"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>\n</defs>\n<circle cx="300" cy="218" r="174" fill="url(#auraA)"/>\n<g fill="none" stroke-linecap="round"><circle cx="300" cy="218" r="145" stroke="#38dfff" stroke-opacity=".48" stroke-width="1.5"/><circle cx="300" cy="218" r="129" stroke="#1a7dff" stroke-opacity=".45" stroke-dasharray="3 9"/><ellipse cx="300" cy="218" rx="186" ry="66" stroke="#3adfff" stroke-width="2.4" transform="rotate(-27 300 218)"/><ellipse cx="300" cy="218" rx="179" ry="58" stroke="#2d7bff" stroke-width="2" transform="rotate(49 300 218)"/><ellipse cx="300" cy="218" rx="155" ry="42" stroke="#80f5ff" stroke-opacity=".7" transform="rotate(82 300 218)"/></g>\n<circle cx="300" cy="218" r="116" fill="url(#glassA)" stroke="#8af7ff" stroke-opacity=".65" stroke-width="2"/>\n<g filter="url(#glowA)" fill="url(#bodyA)" stroke="#9dfaff" stroke-width="1.4" stroke-linejoin="round">\n <path d="M282 146 Q282 124 300 124 Q318 124 318 146 Q317 165 300 169 Q283 165 282 146Z"/>\n <path d="M286 171 L314 171 L331 190 L321 249 L311 269 L289 269 L279 249 L269 190Z" fill-opacity=".9"/>\n <path d="M273 188 L250 205 L232 248 L244 254 L270 222 L283 202Z"/><path d="M327 188 L350 205 L368 248 L356 254 L330 222 L317 202Z"/>\n <path d="M288 267 L310 267 L316 324 L302 329 L295 291 L289 329 L275 324Z"/>\n</g>\n<path d="M278 190 L300 215 L322 190 M279 235 L300 252 L321 235" fill="none" stroke="#d5ffff" stroke-opacity=".8" stroke-width="2"/>\n<g fill="#a5ffff" filter="url(#glowA)"><circle cx="177" cy="164" r="5"/><circle cx="418" cy="182" r="4"/><circle cx="218" cy="319" r="4"/><circle cx="388" cy="292" r="6"/><circle cx="300" cy="82" r="3"/></g>\n<g class="orbit-a"><circle cx="300" cy="218" r="177" fill="none" stroke="#58eaff" stroke-width="1.5" stroke-dasharray="2 16"/><circle cx="477" cy="218" r="6" fill="#a9ffff"/></g>\n<path d="M188 122 Q235 76 285 72" fill="none" stroke="#b2fbff" stroke-opacity=".65" stroke-width="2"/><path d="M392 315 Q353 359 305 365" fill="none" stroke="#247dff" stroke-opacity=".8" stroke-width="3"/>\n</svg>');host.classList.add('distinct-scene-active');})();
+</script>
 </body></html>
