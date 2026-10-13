@@ -35,3 +35,7 @@ The latest build includes a page-entry animation replay patch. Each page re-trig
 
 ## Page animation selector correction
 This build targets the actual `.page-heading`, `.content-view`, `.info-card`, `.skill-choice`, `.project-card`, `.timeline-item`, `.contact-panel`, `.skill-orb`, and `.quick-card` classes used in the page markup. Each page has a distinct entrance animation and staggered content effects. The page-load replay script and reduced-motion support are retained.
+
+
+## Animation system
+This version uses a timed intro overlay modeled on the supplied reference, followed by a different page-specific content reveal on Home, About, Skills, Projects, Experience, and Contact. Clicking/tapping the intro skips it. Reduced-motion preferences remain respected.
