@@ -486,6 +486,26 @@ main.shell{position:relative;z-index:1}.topbar{position:relative;z-index:10}
 @keyframes pageIn{from{opacity:.88;transform:translateY(4px)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){::view-transition-old(root),::view-transition-new(root){animation:none}}
 
+
+/* Compact 3D scene tuning: preserve each page's distinct live scene without pushing content below the fold. */
+.scene-stage{margin:18px 0 22px;padding:12px 14px 10px;border-radius:21px}
+.page-3d-scene{height:clamp(260px,27vw,340px);margin:3px auto 0;overflow:hidden}
+.page-3d-scene .scene-webgl{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;z-index:2;opacity:1}
+.scene-stage-foot{padding:6px 3px 0;font-size:9px}
+@media(max-width:800px){
+  .scene-stage{margin:13px 0 18px;padding:10px 9px 8px;border-radius:18px}
+  .page-3d-scene{height:clamp(205px,56vw,250px);width:100%;margin:2px auto 0;right:auto;top:auto;opacity:1}
+  .scene-stage-head{font-size:9px;letter-spacing:.09em}
+  .scene-live{font-size:8px}
+  .scene-stage-foot{font-size:8px;letter-spacing:.025em;gap:7px;padding-top:5px}
+}
+@media(max-width:380px){
+  .page-3d-scene{height:200px}
+  .scene-stage-foot span:first-child{max-width:54%}
+  .scene-stage-foot span:last-child{max-width:43%}
+}
+@media(prefers-reduced-motion:reduce){.page-3d-scene .scene-webgl{opacity:1}}
+
 </style></head><body data-page="skills"><a class="skip-link" href="#main-content">Skip to content</a><header class="topbar"><div class="shell nav"><a href="index.html" class="brand" aria-label="Saktikanta Dhal home"><span class="logo">SD</span><span><strong>SAKTIKANTA DHAL</strong><small>QA AUTOMATION ENGINEER</small></span></a><button class="menu" id="menuBtn" aria-expanded="false" aria-controls="tabs">☰ Menu</button><nav class="tabs" id="tabs" aria-label="Main navigation"><a class="tab" href="index.html">⌂ &nbsp;Home</a><a class="tab" href="about.html">♙ &nbsp;About</a><a class="tab active" href="skills.html" aria-current="page">◇ &nbsp;Skills</a><a class="tab" href="projects.html">▱ &nbsp;Projects</a><a class="tab" href="experience.html">▣ &nbsp;Experience</a><a class="tab" href="contact.html">➤ &nbsp;Contact</a></nav><a class="download" href="Sakti_Dhal_Resume.pdf" download>↓ &nbsp;Download CV</a></div></header>
 <main class="shell" id="main-content"><section class="section page-section"><div class="page-heading"><div class="kicker">SAKTIKANTA DHAL / SKILLS</div><h1 class="view-title">Skills</h1></div><section class="scene-stage" aria-label="Automation Constellation 3D animation">
 <div class="scene-stage-head"><span>02 / TECHNICAL TOOLKIT</span><span class="scene-live">LIVE 3D SCENE</span></div>
@@ -631,9 +651,9 @@ document.querySelectorAll('[data-skill]').forEach(btn=>btn.addEventListener('cli
     for(let i=0;i<count;i++){positions[i*3]=(Math.random()-.5)*5.7;positions[i*3+1]=(Math.random()-.5)*3.6;positions[i*3+2]=(Math.random()-.5)*2.5;}
     const dustGeo=new T.BufferGeometry();dustGeo.setAttribute('position',new T.BufferAttribute(positions,3));
     const dust=new T.Points(dustGeo,new T.PointsMaterial({color:0x5bcfff,size:.026,transparent:true,opacity:.52,depthWrite:false}));scene.add(dust);
-    const resize=()=>{const w=Math.max(1,host.clientWidth),h=Math.max(1,host.clientHeight);renderer.setSize(w,h,false);camera.aspect=w/h;camera.position.z=w<520?7.9:7.1;camera.updateProjectionMatrix();};
+    const resize=()=>{const w=Math.max(1,host.clientWidth),h=Math.max(1,host.clientHeight);renderer.setSize(w,h,false);camera.aspect=w/h;camera.position.z=w<380?6.9:(w<520?7.1:(w<900?7.25:7.4));camera.updateProjectionMatrix();};
     resize();const ro=window.ResizeObserver?new ResizeObserver(resize):null;if(ro)ro.observe(host);else window.addEventListener('resize',resize,{passive:true});
-    let raf=0,started=performance.now();
+    let raf=0,started=performance.now(),sceneVisible=true;
     const render=now=>{
       const t=(now-started)/1000;
       if(!reduced){
@@ -644,10 +664,12 @@ document.querySelectorAll('[data-skill]').forEach(btn=>btn.addEventListener('cli
         if(page==='contact'){moving.forEach(m=>{if(m.type==='envelope'){m.obj.rotation.y=.12*Math.sin(t*.7);m.obj.position.y=.04*Math.sin(t*1.1);}if(m.type==='contactNode'){m.obj.position.copy(m.base);m.obj.position.y+=.08*Math.sin(t*1.5+m.phase);}if(m.type==='signal'){const u=(t*.22)%1;const path=[[-2.15,.8,.1],[0,1.45,-.1],[1.9,.85,.1],[2.1,-.65,.2],[0,-1.35,.1],[-1.85,-.85,.2],[-2.15,.8,.1]];const q=u*(path.length-1),i=Math.floor(q),f=q-i,a=path[i],b=path[Math.min(i+1,path.length-1)];m.obj.position.set(a[0]+(b[0]-a[0])*f,a[1]+(b[1]-a[1])*f,a[2]+(b[2]-a[2])*f);}if(m.type==='spin')m.obj.rotation.z+=m.rate;});}
         dust.rotation.y=t*.012; dust.rotation.x=Math.sin(t*.12)*.04;
       }
-      renderer.render(scene,camera); if(!reduced&&!document.hidden)raf=requestAnimationFrame(render);
+      renderer.render(scene,camera); if(!reduced&&!document.hidden&&sceneVisible)raf=requestAnimationFrame(render);
     };
-    const start=()=>{cancelAnimationFrame(raf);if(!document.hidden){if(!reduced)raf=requestAnimationFrame(render);else render(performance.now());}};
-    document.addEventListener('visibilitychange',start);start();
+    const start=()=>{cancelAnimationFrame(raf);if(!document.hidden&&sceneVisible){if(!reduced)raf=requestAnimationFrame(render);else render(performance.now());}};
+    document.addEventListener('visibilitychange',start);
+    if('IntersectionObserver' in window){const observer=new IntersectionObserver(entries=>{sceneVisible=entries.some(entry=>entry.isIntersecting);start();},{rootMargin:'100px'});observer.observe(host);}
+    start();
     // Keep canvas and scene accessible when WebGL cannot be initialized; content stays visible.
   }).catch(()=>{canvas.remove();host.classList.add('scene-fallback');});
 })();

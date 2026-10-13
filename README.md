@@ -57,3 +57,14 @@ The About, Skills, Projects, Experience, and Contact pages now include lightweig
 ## Dedicated 3D scenes update
 
 Each inner page now has a full-width, dedicated Three.js scene area: About uses a holographic human figure and orbital rings; Skills uses a connected icosahedral constellation; Projects uses a 3D automation pipeline with moving signals; Experience uses rising career bars and a moving timeline signal; Contact uses a 3D envelope and a connected communication network. These are distinct scenes, not a repeated globe. The page content is available immediately; there is no timed intro gate. Scene dimensions respond to mobile widths, device pixel ratio is capped, rendering pauses while the tab is hidden, and reduced-motion preferences are respected. Three.js is loaded from a CDN, so an internet connection is required for the WebGL scenes.
+
+
+## Compact 3D scene update
+
+- Each inner page keeps its own real-time Three.js scene: holographic identity (About), technology constellation (Skills), automation pipeline (Projects), career progression (Experience), and communication network (Contact).
+- The dedicated scene panel is now shorter on phones (about 200–250 CSS px for the canvas) and more compact on desktop, so page content appears sooner.
+- Canvas framing adapts to viewport width for improved mobile visibility.
+- Rendering pauses when the scene is off-screen or the browser tab is hidden, reducing unnecessary GPU work.
+- Navigation remains immediate; no timed intro blocks page changes.
+
+Open `index.html` locally or deploy the folder contents to GitHub Pages. Three.js is loaded from a CDN, so the 3D scenes require an internet connection.
