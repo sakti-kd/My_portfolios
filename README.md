@@ -43,3 +43,12 @@ This version uses a timed intro overlay modeled on the supplied reference, follo
 
 ## Page-specific 3D visuals
 The About, Skills, Projects, Experience, and Contact pages now include lightweight CSS 3D scenes: a rotating identity sphere, wireframe cube, floating glass panels, animated career bars, and a holographic envelope. These scenes use CSS transforms and keyframes (no additional WebGL dependency), sit behind the page content, reduce in size/opacity on mobile, and respect reduced-motion preferences. The Home page keeps its existing animated globe.
+
+
+## Smooth navigation and continuous 3D scenes
+
+- Inner pages no longer show a timed intro overlay; page content is available immediately.
+- About, Skills, Projects, Experience, and Contact each use a continuously animated Three.js globe with page-specific 3D accents.
+- Native cross-document View Transitions are enabled where the browser supports them; unsupported browsers navigate immediately.
+- Three.js loads from cdnjs, so the 3D scenes require an internet connection. If WebGL/CDN loading fails, the existing lightweight CSS scene remains as a fallback.
+- The Home page and its current hero animation are preserved.

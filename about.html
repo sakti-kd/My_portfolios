@@ -333,7 +333,7 @@ body.intro-finished[data-page="contact"] .contact-panel .actions a:nth-child(3) 
 .scene-orbit.orbit-a { width: 84%; height: 34%; margin:-17% 0 0 -42%; transform: rotate(-28deg) rotateX(58deg); animation: orbitSpinA 13s linear infinite; }
 .scene-orbit.orbit-b { width: 74%; height: 43%; margin:-21.5% 0 0 -37%; transform: rotate(52deg) rotateY(60deg); animation: orbitSpinB 17s linear infinite; }
 .scene-core {
-  position: absolute; left: 50%; top: 50%; width:62%; height:62%; display:grid; place-items:center;
+  position: absolute; left: 50%; top: 50%;
   transform: translate(-50%,-50%);
   filter: drop-shadow(0 0 18px rgba(34,211,255,.25));
 }
@@ -437,65 +437,121 @@ body[data-page="contact"] .scene-core { width:100%; height:100%; display:grid; p
 
 
 /* 3D scene stacking safeguard */
-main.shell{position:relative;z-index:1}.topbar{z-index:10}
+main.shell{position:relative;z-index:1}.topbar{position:relative;z-index:10}
+
+/* Fast multi-page navigation: supported browsers animate document swaps; others navigate immediately. */
+@view-transition { navigation: auto; }
+::view-transition-old(root) { animation: 150ms ease-out both pageOut; }
+::view-transition-new(root) { animation: 220ms cubic-bezier(.2,.8,.2,1) both pageIn; }
+@keyframes pageOut { to { opacity:.35; filter:blur(2px); } }
+@keyframes pageIn { from { opacity:.35; filter:blur(2px); } to { opacity:1; filter:blur(0); } }
+.page-3d-scene { overflow:visible; }
+.page-3d-scene .scene-webgl {
+  position:absolute; inset:0; width:100%; height:100%; display:block;
+  pointer-events:none; z-index:2; opacity:1;
+}
+.page-3d-scene > :not(.scene-webgl) { display:none !important; }
+@media (max-width:800px) { .page-3d-scene .scene-webgl { opacity:.95; } }
+@media (prefers-reduced-motion:reduce) {
+  ::view-transition-old(root), ::view-transition-new(root) { animation:none; }
+}
+
 </style></head><body data-page="about"><a class="skip-link" href="#main-content">Skip to content</a><header class="topbar"><div class="shell nav"><a href="index.html" class="brand" aria-label="Saktikanta Dhal home"><span class="logo">SD</span><span><strong>SAKTIKANTA DHAL</strong><small>QA AUTOMATION ENGINEER</small></span></a><button class="menu" id="menuBtn" aria-expanded="false" aria-controls="tabs">☰ Menu</button><nav class="tabs" id="tabs" aria-label="Main navigation"><a class="tab" href="index.html">⌂ &nbsp;Home</a><a class="tab active" href="about.html" aria-current="page">♙ &nbsp;About</a><a class="tab" href="skills.html">◇ &nbsp;Skills</a><a class="tab" href="projects.html">▱ &nbsp;Projects</a><a class="tab" href="experience.html">▣ &nbsp;Experience</a><a class="tab" href="contact.html">➤ &nbsp;Contact</a></nav><a class="download" href="Sakti_Dhal_Resume.pdf" download>↓ &nbsp;Download CV</a></div></header><div class="page-3d-scene" aria-hidden="true"><div class="scene-orbit orbit-a"></div><div class="scene-orbit orbit-b"></div><div class="scene-core"></div><span class="scene-node n1"></span><span class="scene-node n2"></span><span class="scene-node n3"></span><span class="scene-particle p1"></span><span class="scene-particle p2"></span><span class="scene-particle p3"></span><span class="scene-particle p4"></span><div class="scene-3d-label">PROFESSIONAL IDENTITY</div></div>
 <main class="shell" id="main-content"><section class="section page-section"><div class="page-heading"><div class="kicker">SAKTIKANTA DHAL / ABOUT</div><h1 class="view-title">About</h1></div><div class="content-view active" data-panel="about"><div class="kicker">01 / ABOUT ME</div><h2 class="view-title">Curious by nature. Quality-focused by practice.</h2><p class="view-lead">I'm a QA Automation Engineer based in Bengaluru, India, focused on building dependable automated checks and helping teams get faster, clearer feedback from testing.</p><div class="view-grid"><article class="info-card"><h3>How I work</h3><p>I value readable automation, meaningful assertions, reusable patterns, and failure reports that help teams understand what went wrong.</p></article><article class="info-card"><h3>What motivates me</h3><p>Solving repetitive testing challenges, improving stability, learning new tools, and applying AI responsibly to engineering workflows.</p></article><article class="info-card"><h3>My focus</h3><p>Playwright UI/API automation, CI/CD reliability, and validating AI-assisted test-generation workflows.</p></article></div></div></section></main><footer class="footer"><div class="shell footer-inner"><span>© <span id="year"></span> Saktikanta Dhal · QA Automation Engineer</span><span>Built for reliability, curiosity, and continuous improvement. <a href="index.html">Back to Home ↑</a></span></div></footer><div class="toast" id="toast" role="status" aria-live="polite"></div><script>(()=>{const menu=document.getElementById('menuBtn'),nav=document.getElementById('tabs');if(menu&&nav){menu.addEventListener('click',()=>{const open=nav.classList.toggle('open');menu.setAttribute('aria-expanded',String(open));});}const year=document.getElementById('year');if(year)year.textContent=new Date().getFullYear();})();</script>
 
-<script>
-/* Timed intro inspired by the supplied reference, with an explicit skip path. */
+<script>document.body.classList.add("intro-finished");</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>/* Continuous Three.js scenes for inner pages. No intro timer; content is available immediately. */
 (() => {
   const body = document.body;
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const page = body.dataset.page || 'home';
-  const copy = {
-    home: ['Saktikanta Dhal', 'QA Automation Engineer'],
-    about: ['About Me', 'Quality-focused by practice'],
-    skills: ['Skills', 'Core automation · Agentic AI'],
-    projects: ['Projects', 'Engineering outcomes'],
-    experience: ['Experience', 'My professional journey'],
-    contact: ['Let’s Connect', 'Building reliable quality together']
-  }[page] || ['Saktikanta Dhal', 'QA Automation Engineer'];
+  const page = body.dataset.page || 'about';
+  body.classList.add('intro-finished');
+  const host = document.querySelector('.page-3d-scene');
+  if (!host) return;
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const canvas = document.createElement('canvas');
+  canvas.className = 'scene-webgl';
+  canvas.setAttribute('aria-hidden', 'true');
+  canvas.setAttribute('role', 'presentation');
+  host.appendChild(canvas);
 
-  if (reduce) {
-    body.classList.add('intro-finished');
-    return;
-  }
-
-  const overlay = document.createElement('div');
-  overlay.id = 'portfolio-intro';
-  overlay.setAttribute('aria-hidden', 'true');
-  overlay.innerHTML = '<div class="intro-mark">SD</div><h2></h2><p></p><div class="intro-line"><span></span></div>';
-  overlay.querySelector('h2').textContent = copy[0];
-  overlay.querySelector('p').textContent = copy[1];
-  document.body.appendChild(overlay);
-
-  body.classList.add('portfolio-intro-running');
-  const finish = () => {
-    if (body.classList.contains('intro-finished')) return;
-    body.classList.add('intro-phase-two');
-    window.setTimeout(() => {
-      body.classList.remove('portfolio-intro-running', 'intro-phase-one', 'intro-phase-two');
-      body.classList.add('intro-finished');
-      overlay.remove();
-    }, 420);
+  const loadThree = () => {
+    if (window.THREE) return Promise.resolve(window.THREE);
+    return new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+      script.async = true;
+      script.onload = () => window.THREE ? resolve(window.THREE) : reject(new Error('Three.js unavailable'));
+      script.onerror = reject;
+      document.head.appendChild(script);
+    });
   };
 
-  requestAnimationFrame(() => body.classList.add('intro-phase-one'));
-  const timer = window.setTimeout(finish, 2050);
-  // Clicking/tapping anywhere skips the intro, never blocks navigation afterwards.
-  overlay.addEventListener('pointerdown', () => {
-    window.clearTimeout(timer);
-    finish();
-  }, { once: true });
-  window.addEventListener('pageshow', event => {
-    if (event.persisted) {
-      window.clearTimeout(timer);
-      body.classList.remove('portfolio-intro-running', 'intro-phase-one', 'intro-phase-two');
-      body.classList.add('intro-finished');
-      overlay.remove();
+  loadThree().then(THREE => {
+    if (!canvas.isConnected) return;
+    const renderer = new THREE.WebGLRenderer({canvas, alpha:true, antialias:true, powerPreference:'low-power'});
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+    renderer.setClearColor(0x000000, 0);
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(36, 1, .1, 100);
+    camera.position.set(0, 0, 8.8);
+    scene.add(new THREE.AmbientLight(0x9bcfff, 1.15));
+    const cyan = new THREE.PointLight(0x13cfff, 2.1, 30); cyan.position.set(3, 3, 5); scene.add(cyan);
+    const blue = new THREE.PointLight(0x285cff, 1.8, 30); blue.position.set(-4, -2, 3); scene.add(blue);
+    const root = new THREE.Group(); scene.add(root);
+    const globeGroup = new THREE.Group(); root.add(globeGroup);
+    const globeMat = new THREE.MeshStandardMaterial({color:0x087ed4, emissive:0x003d88, emissiveIntensity:.5, metalness:.55, roughness:.35, transparent:true, opacity:.38, wireframe:true});
+    const globe = new THREE.Mesh(new THREE.SphereGeometry(1.28, 28, 20), globeMat); globeGroup.add(globe);
+    const inner = new THREE.Mesh(new THREE.SphereGeometry(1.22, 24, 18), new THREE.MeshBasicMaterial({color:0x16caff, wireframe:true, transparent:true, opacity:.15})); globeGroup.add(inner);
+    const rings = [];
+    [[1.7,.018,0x16cfff],[1.92,.012,0x347aff],[1.48,.009,0x8aeaff]].forEach(([radius,tube,color],i)=>{
+      const ring = new THREE.Mesh(new THREE.TorusGeometry(radius,tube,8,100),new THREE.MeshBasicMaterial({color,transparent:true,opacity:.85}));
+      ring.rotation.set(.9+i*.45,.25+i*.72,.15+i*.35); globeGroup.add(ring); rings.push(ring);
+    });
+    const nodeMaterial = new THREE.MeshBasicMaterial({color:0x8cecff});
+    const nodes = [];
+    for(let i=0;i<24;i++){
+      const lat = Math.acos(2*(i+.5)/24-1), lon = i*2.3999632297;
+      const r=1.31, mesh=new THREE.Mesh(new THREE.SphereGeometry(i%4===0?.055:.027,8,8),nodeMaterial);
+      mesh.position.set(r*Math.sin(lat)*Math.cos(lon),r*Math.cos(lat),r*Math.sin(lat)*Math.sin(lon));
+      globeGroup.add(mesh); nodes.push(mesh);
     }
-  }, { once: true });
+    // Page-specific 3D accents orbit the same animated globe.
+    const accents = new THREE.Group(); root.add(accents);
+    const mat = (color,emissive=color) => new THREE.MeshStandardMaterial({color,emissive,emissiveIntensity:.35,metalness:.45,roughness:.3});
+    if(page==='about'){
+      for(let i=0;i<4;i++){const a=new THREE.Mesh(new THREE.IcosahedronGeometry(.14,1),mat(i%2?0x35aaff:0x31e3ff));a.position.set(Math.cos(i*Math.PI/2)*2.05,Math.sin(i*Math.PI/2)*1.2,.2);accents.add(a);a.userData={phase:i*1.5,orbit:1};}
+    } else if(page==='skills'){
+      const cube=new THREE.Mesh(new THREE.BoxGeometry(.7,.7,.7),new THREE.MeshStandardMaterial({color:0x18bfff,wireframe:true,emissive:0x006bff,emissiveIntensity:.5}));cube.position.set(1.85,.1,.15);accents.add(cube);cube.userData.spin=true;
+      for(let i=0;i<5;i++){const dot=new THREE.Mesh(new THREE.SphereGeometry(.055,8,8),mat(0x58e6ff));dot.position.set(1.65+i*.17,-.85+Math.sin(i)*.18,.3);accents.add(dot);dot.userData={phase:i*.8,orbit:2};}
+    } else if(page==='projects'){
+      for(let i=0;i<3;i++){const panel=new THREE.Mesh(new THREE.BoxGeometry(.55,.72,.045),new THREE.MeshStandardMaterial({color:i===1?0x187aff:0x12caff,emissive:0x064a9e,emissiveIntensity:.5,metalness:.4,roughness:.25,transparent:true,opacity:.8}));panel.position.set(1.75+i*.12,(i-1)*.55,.1-i*.15);panel.rotation.y=(i-1)*.25;accents.add(panel);panel.userData={phase:i*1.8,orbit:3};}
+    } else if(page==='experience'){
+      for(let i=0;i<7;i++){const bar=new THREE.Mesh(new THREE.BoxGeometry(.13,.55+(i%3)*.22,.13),mat(i%2?0x2d8fff:0x28ddff));bar.position.set(1.55+i*.18,-.45+(i%3)*.1,.15);accents.add(bar);bar.userData={bar:i,base:.55+(i%3)*.22};}
+    } else if(page==='contact'){
+      const torus=new THREE.Mesh(new THREE.TorusGeometry(.48,.065,12,40),mat(0x27d8ff));torus.position.set(1.8,0,.1);accents.add(torus);torus.userData.spin=true;
+      for(let i=0;i<5;i++){const dot=new THREE.Mesh(new THREE.SphereGeometry(.06,10,10),mat(i%2?0x258cff:0x7ceaff));accents.add(dot);dot.userData={phase:i*1.25,orbit:4};}
+    }
+    // A subtle dust field gives the scene depth without heavy GPU work.
+    const count=100, positions=new Float32Array(count*3);
+    for(let i=0;i<count;i++){positions[i*3]=(Math.random()-.5)*7;positions[i*3+1]=(Math.random()-.5)*5;positions[i*3+2]=(Math.random()-.5)*2;}
+    const dustGeo=new THREE.BufferGeometry();dustGeo.setAttribute('position',new THREE.BufferAttribute(positions,3));
+    const dust=new THREE.Points(dustGeo,new THREE.PointsMaterial({color:0x63cfff,size:.025,transparent:true,opacity:.55,depthWrite:false}));scene.add(dust);
+    const resize=()=>{const w=Math.max(1,host.clientWidth),h=Math.max(1,host.clientHeight);renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();};
+    resize(); window.addEventListener('resize',resize,{passive:true});
+    let raf=0, start=performance.now();
+    const draw=now=>{
+      const t=(now-start)/1000;
+      if(!reduced){globeGroup.rotation.y=t*.19;globeGroup.rotation.x=Math.sin(t*.22)*.08;rings.forEach((r,i)=>{r.rotation.z+=.0015*(i%2?-1:1)});accents.rotation.y=Math.sin(t*.22)*.08;
+        accents.children.forEach(o=>{const u=o.userData;if(u.spin){o.rotation.x+=.008;o.rotation.y+=.012;}if(u.orbit===1){o.position.y=Math.sin(t+u.phase)*1.2;o.position.x=Math.cos(t*.7+u.phase)*1.8;}if(u.orbit===2){o.position.y=-.85+Math.sin(t+u.phase)*.22;}if(u.orbit===3){o.position.y=Math.sin(t*1.2+u.phase)*.65;}if(u.orbit===4){const a=t*.65+u.phase;o.position.set(1.8+Math.cos(a)*.72,Math.sin(a)*.72,.1); }if(u.bar!==undefined)o.scale.y=.7+.3*Math.sin(t*1.7+u.bar);});dust.rotation.y=t*.012;
+      }
+      renderer.render(scene,camera); if(!reduced)raf=requestAnimationFrame(draw);
+    };
+    raf=requestAnimationFrame(draw);
+    document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(raf);}else if(!reduced){start=performance.now();raf=requestAnimationFrame(draw);}else renderer.render(scene,camera);});
+    if(reduced) draw(performance.now());
+  }).catch(()=>{ /* Keep the lightweight existing visual fallback if WebGL/CDN is unavailable. */ canvas.remove(); });
 })();
 </script>
-
 </body></html>
