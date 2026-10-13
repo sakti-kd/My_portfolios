@@ -39,3 +39,7 @@ This build targets the actual `.page-heading`, `.content-view`, `.info-card`, `.
 
 ## Animation system
 This version uses a timed intro overlay modeled on the supplied reference, followed by a different page-specific content reveal on Home, About, Skills, Projects, Experience, and Contact. Clicking/tapping the intro skips it. Reduced-motion preferences remain respected.
+
+
+## Page-specific 3D visuals
+The About, Skills, Projects, Experience, and Contact pages now include lightweight CSS 3D scenes: a rotating identity sphere, wireframe cube, floating glass panels, animated career bars, and a holographic envelope. These scenes use CSS transforms and keyframes (no additional WebGL dependency), sit behind the page content, reduce in size/opacity on mobile, and respect reduced-motion preferences. The Home page keeps its existing animated globe.
