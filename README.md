@@ -31,3 +31,7 @@ The site uses static HTML, CSS, and JavaScript. No build step or external JavaSc
 
 ## Animation fix
 The latest build includes a page-entry animation replay patch. Each page re-triggers its page-specific heading and content animations on load and browser back/forward restoration. The `prefers-reduced-motion` accessibility setting is still respected.
+
+
+## Page animation selector correction
+This build targets the actual `.page-heading`, `.content-view`, `.info-card`, `.skill-choice`, `.project-card`, `.timeline-item`, `.contact-panel`, `.skill-orb`, and `.quick-card` classes used in the page markup. Each page has a distinct entrance animation and staggered content effects. The page-load replay script and reduced-motion support are retained.
