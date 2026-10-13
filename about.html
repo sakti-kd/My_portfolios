@@ -555,8 +555,8 @@ main.shell{position:relative;z-index:1}.topbar{position:relative;z-index:10}
   });
   loadThree().then(T => {
     if (!canvas.isConnected) return;
-    const renderer = new T.WebGLRenderer({canvas, alpha:true, antialias:true, powerPreference:'low-power'});
-    renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.35));
+    const renderer = new T.WebGLRenderer({canvas, alpha:true, antialias:true, powerPreference:'high-performance'});
+    renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.6));
     renderer.setClearColor(0x000000, 0);
     const scene = new T.Scene();
     const camera = new T.PerspectiveCamera(38, 1, .1, 100);
@@ -704,12 +704,20 @@ main.shell{position:relative;z-index:1}.topbar{position:relative;z-index:10}
       for(let i=0;i<18;i++){const a=i*Math.PI*2/18;const n=new T.Mesh(new T.SphereGeometry(i%3===0?.045:.022,8,7),new T.MeshBasicMaterial({color:i%3===0?0xffffff:0x56eaff}));n.position.set(Math.cos(a)*1.58,Math.sin(a)*1.02,.28*Math.sin(a*2));signature.add(n);moving.push({type:'signatureNode',obj:n,phase:i*.45,base:n.position.clone()});}
     }
 
+    // Identity details: luminous chest core, shoulder accents and a fine orbital coordinate ring.
+    if(page==='about') {
+      const core=new T.Mesh(new T.OctahedronGeometry(.13,1),new T.MeshBasicMaterial({color:0xc4fbff}));core.position.set(0,.16,.43);signature.add(core);
+      const coreHalo=new T.Mesh(new T.TorusGeometry(.22,.012,6,64),glowMat(0x54f4ff,.9));coreHalo.position.copy(core.position);signature.add(coreHalo);moving.push({type:'signatureSpin',obj:coreHalo,rate:.45});
+      for(const side of [-1,1]) { const plate=new T.Mesh(new T.SphereGeometry(.19,12,8),new T.MeshStandardMaterial({color:0x138ac9,emissive:0x0a7bff,emissiveIntensity:.55,metalness:.45,roughness:.25}));plate.scale.set(1,.62,.48);plate.position.set(side*.37,.43,.02);signature.add(plate); }
+      const floorRing=new T.Mesh(new T.TorusGeometry(.7,.012,5,96),glowMat(0x2e8dff,.8));floorRing.rotation.x=Math.PI/2;floorRing.position.set(0,-1.36,.08);signature.add(floorRing);moving.push({type:'signatureRing',obj:floorRing,rate:.008});
+    }
+
     // A restrained particle field adds depth; keep the geometry budget mobile-friendly.
     const count=page==='skills'?140:100, positions=new Float32Array(count*3);
     for(let i=0;i<count;i++){positions[i*3]=(Math.random()-.5)*5.7;positions[i*3+1]=(Math.random()-.5)*3.6;positions[i*3+2]=(Math.random()-.5)*2.5;}
     const dustGeo=new T.BufferGeometry();dustGeo.setAttribute('position',new T.BufferAttribute(positions,3));
     const dust=new T.Points(dustGeo,new T.PointsMaterial({color:0x5bcfff,size:.026,transparent:true,opacity:.52,depthWrite:false}));scene.add(dust);
-    const resize=()=>{const w=Math.max(1,host.clientWidth),h=Math.max(1,host.clientHeight);renderer.setSize(w,h,false);camera.aspect=w/h;camera.position.z=w<380?6.25:(w<520?6.55:(w<900?6.85:7.0));camera.updateProjectionMatrix();};
+    const resize=()=>{const w=Math.max(1,host.clientWidth),h=Math.max(1,host.clientHeight);renderer.setSize(w,h,false);camera.aspect=w/h;camera.position.z=w<380?5.85:(w<520?6.15:(w<900?6.65:6.9));camera.updateProjectionMatrix();};
     resize();const ro=window.ResizeObserver?new ResizeObserver(resize):null;if(ro)ro.observe(host);else window.addEventListener('resize',resize,{passive:true});
     let raf=0,started=performance.now(),sceneVisible=true;
     const render=now=>{
