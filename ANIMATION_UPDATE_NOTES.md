@@ -1,13 +1,5 @@
-# Distinct 3D Animation Update
+# Distinctive 3D animation update
 
-This package includes five separate Three.js scenes for About, Skills, Projects, Experience, and Contact.
+This version makes the five page scenes more visibly distinct with page-specific geometry and motion: a glass identity capsule, a faceted skill crystal, continuous illuminated test-execution tracks, a globe with broad career routes, and a dimensional envelope with communication pulses. Existing content, navigation, and responsive layout are preserved.
 
-## Visual updates
-- About: additional holographic identity details, chest core, shoulder accents, orbital coordinate ring, and fine particles.
-- Skills: more distinct constellation orbits and satellite nodes around the connected technology sphere.
-- Projects: added stage frames, illuminated rails, beacons, and moving execution packets to make the pipeline read more clearly.
-- Experience: added a career route and illuminated milestone nodes around the globe.
-- Contact: refined the envelope flap/creases and added a perimeter and signal pulses.
-- Improved scene framing and pixel density while retaining mobile-friendly page layout.
-
-The 3D scenes load Three.js from cdnjs, so an internet connection is required. These changes are packaged locally; they do not automatically update GitHub Pages until committed to the repository.
+Three.js remains loaded from its CDN, so live rendering requires network access and WebGL support.
