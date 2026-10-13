@@ -68,3 +68,10 @@ Each inner page now has a full-width, dedicated Three.js scene area: About uses 
 - Navigation remains immediate; no timed intro blocks page changes.
 
 Open `index.html` locally or deploy the folder contents to GitHub Pages. Three.js is loaded from a CDN, so the 3D scenes require an internet connection.
+
+
+## Final responsive 3D layout update
+- Inner pages use a compact split hero: intro copy on the left and a page-specific real-time 3D scene on the right on desktop.
+- On mobile, the intro stays first and the 3D scene becomes a short, contained panel below it; it no longer consumes a large empty viewport.
+- About, Skills, Projects, Experience, and Contact retain distinct 3D subjects.
+- The rest of each page returns to full content width beneath the hero.

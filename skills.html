@@ -506,6 +506,31 @@ main.shell{position:relative;z-index:1}.topbar{position:relative;z-index:10}
 }
 @media(prefers-reduced-motion:reduce){.page-3d-scene .scene-webgl{opacity:1}}
 
+
+/* Final layout correction: put each unique 3D scene beside its page intro, not in a full-width blank block. */
+.page-section{display:block;min-height:0;padding-top:clamp(24px,3.5vw,46px)}
+.page-hero-layout{display:grid;grid-template-columns:minmax(0,1.02fr) minmax(300px,.98fr);align-items:center;gap:clamp(22px,4vw,58px);margin:0 0 clamp(24px,4vw,44px);}
+.page-hero-copy{min-width:0;align-self:center}
+.page-hero-copy .page-heading{margin:0 0 22px;animation:none!important}
+.page-hero-copy .page-heading .view-title{font-size:clamp(38px,5.2vw,68px);line-height:1.04;letter-spacing:-.065em;margin:8px 0 0}
+.page-hero-copy .content-view{display:block;min-height:0;animation:none!important;transform:none!important;filter:none!important}
+.page-hero-copy .content-view>.kicker{margin-bottom:12px}
+.page-hero-copy .content-view>.view-title{font-size:clamp(25px,3vw,40px);line-height:1.12;letter-spacing:-.055em;margin:0 0 14px}
+.page-hero-copy .content-view>.view-lead{font-size:clamp(14px,1.25vw,17px);line-height:1.8;max-width:62ch;margin:0}
+.page-hero-layout .scene-stage{width:100%;min-width:0;align-self:center;margin:0;padding:12px 13px 10px;border-radius:22px;overflow:hidden;}
+.page-hero-layout .scene-stage-head{font-size:10px;letter-spacing:.12em;gap:8px}
+.page-hero-layout .scene-live{font-size:9px}
+.page-hero-layout .page-3d-scene{position:relative!important;inset:auto!important;z-index:1;width:100%!important;height:clamp(230px,25vw,310px)!important;aspect-ratio:auto!important;margin:5px auto 0;opacity:1!important;overflow:hidden;}
+.page-hero-layout .scene-stage-foot{position:relative;z-index:3;display:flex;justify-content:space-between;gap:8px;margin-top:2px;font-size:9px;line-height:1.4;letter-spacing:.06em;color:#8da9c7;}
+.page-section>.content-view{width:100%;min-width:0;}
+/* Make the actual page content use the available width after the compact scene hero. */
+.page-section>.content-view .view-grid{grid-template-columns:repeat(3,minmax(0,1fr));}
+.page-section>.content-view .project-list,.page-section>.content-view .timeline,.page-section>.content-view .skill-explorer,.page-section>.content-view .contact-panel{width:100%;}
+@media(max-width:900px){.page-hero-layout{grid-template-columns:minmax(0,1fr) minmax(270px,.9fr);gap:22px}.page-hero-layout .page-3d-scene{height:250px!important}.page-hero-copy .page-heading .view-title{font-size:clamp(36px,5vw,52px)}}
+@media(max-width:680px){.page-section{padding-top:22px}.page-hero-layout{display:flex;flex-direction:column;align-items:stretch;gap:18px;margin-bottom:25px}.page-hero-copy{width:100%}.page-hero-copy .page-heading{margin-bottom:18px}.page-hero-copy .page-heading .view-title{font-size:clamp(36px,10vw,48px)}.page-hero-copy .content-view>.view-title{font-size:clamp(25px,7vw,32px)}.page-hero-copy .content-view>.view-lead{font-size:14px;line-height:1.7}.page-hero-layout .scene-stage{order:2;margin:0;padding:10px 11px 9px;border-radius:18px}.page-hero-layout .scene-stage-head{font-size:9px;letter-spacing:.08em}.page-hero-layout .scene-live{font-size:8px}.page-hero-layout .page-3d-scene{height:178px!important;margin:2px auto 0}.page-hero-layout .scene-stage-foot{font-size:8px;letter-spacing:.035em}.page-section>.content-view .view-grid{grid-template-columns:1fr}.page-section>.content-view .project-list,.page-section>.content-view .timeline{gap:12px}}
+@media(max-width:380px){.page-hero-layout .page-3d-scene{height:160px!important}.page-hero-layout .scene-stage{padding:9px}.page-hero-layout .scene-stage-head{font-size:8px}.page-hero-layout .scene-stage-foot{font-size:7px}.page-hero-copy .page-heading .view-title{font-size:35px}}
+@media(prefers-reduced-motion:reduce){.page-hero-layout,.page-hero-layout *{animation:none!important;transition:none!important;filter:none!important}}
+
 </style></head><body data-page="skills"><a class="skip-link" href="#main-content">Skip to content</a><header class="topbar"><div class="shell nav"><a href="index.html" class="brand" aria-label="Saktikanta Dhal home"><span class="logo">SD</span><span><strong>SAKTIKANTA DHAL</strong><small>QA AUTOMATION ENGINEER</small></span></a><button class="menu" id="menuBtn" aria-expanded="false" aria-controls="tabs">☰ Menu</button><nav class="tabs" id="tabs" aria-label="Main navigation"><a class="tab" href="index.html">⌂ &nbsp;Home</a><a class="tab" href="about.html">♙ &nbsp;About</a><a class="tab active" href="skills.html" aria-current="page">◇ &nbsp;Skills</a><a class="tab" href="projects.html">▱ &nbsp;Projects</a><a class="tab" href="experience.html">▣ &nbsp;Experience</a><a class="tab" href="contact.html">➤ &nbsp;Contact</a></nav><a class="download" href="Sakti_Dhal_Resume.pdf" download>↓ &nbsp;Download CV</a></div></header>
 <main class="shell" id="main-content"><section class="section page-section"><div class="page-heading"><div class="kicker">SAKTIKANTA DHAL / SKILLS</div><h1 class="view-title">Skills</h1></div><section class="scene-stage" aria-label="Automation Constellation 3D animation">
 <div class="scene-stage-head"><span>02 / TECHNICAL TOOLKIT</span><span class="scene-live">LIVE 3D SCENE</span></div>
@@ -672,6 +697,29 @@ document.querySelectorAll('[data-skill]').forEach(btn=>btn.addEventListener('cli
     start();
     // Keep canvas and scene accessible when WebGL cannot be initialized; content stays visible.
   }).catch(()=>{canvas.remove();host.classList.add('scene-fallback');});
+})();
+</script>
+<script>
+/* Build a compact split hero: copy on the left and a page-specific 3D scene on the right. */
+(()=>{
+ const section=document.querySelector('.page-section');
+ if(!section || section.querySelector('.page-hero-layout')) return;
+ const heading=section.querySelector(':scope > .page-heading');
+ const scene=section.querySelector(':scope > .scene-stage');
+ const content=section.querySelector(':scope > .content-view');
+ if(!heading || !scene || !content) return;
+ const hero=document.createElement('div'); hero.className='page-hero-layout';
+ const copy=document.createElement('div'); copy.className='page-hero-copy';
+ copy.appendChild(heading);
+ // Move only the introductory copy into the left hero column; cards/lists remain full width below.
+ let moved=0;
+ while(content.firstElementChild && moved<3){
+   const child=content.firstElementChild;
+   if(!['DIV','H2','P'].includes(child.tagName)) break;
+   copy.appendChild(child); moved++;
+ }
+ hero.append(copy,scene);
+ section.insertBefore(hero,content);
 })();
 </script>
 </body></html>
